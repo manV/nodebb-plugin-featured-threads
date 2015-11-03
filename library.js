@@ -7,6 +7,7 @@
 		SocketTopics = module.parent.require('./socket.io/topics'),
         Sockets = module.parent.require('./socket.io/index'),
         topics = module.parent.require('./topics.js'),
+		privileges = module.parent.require('./privileges.js'),
 		nconf = module.parent.require('nconf'),
         db = module.parent.require('./database.js'),
         app;
@@ -70,13 +71,20 @@
 	};
 
 	Plugin.addThreadTools = function(data, callback) {
-		data.tools.push({
-			"title": "Feature this thread",
-			"class": "mark-featured",
-			"icon": "fa-star-o"
+		privileges.topics.get(data.topic.tid, data.uid, function(err, topicPrivileges) {
+			if(err) {
+				callback(err);
+			} else {
+				if(topicPrivileges.isAdminOrMod) {
+					data.tools.push({
+						"title": "Feature this thread",
+						"class": "mark-featured",
+						"icon": "fa-star-o"
+					});	
+				}
+				callback(null, data);	
+			}
 		});
-
-		callback(null, data);
 	};
 
 	Plugin.defineWidgets = function(widgets, callback) {
