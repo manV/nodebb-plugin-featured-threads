@@ -1,105 +1,98 @@
-<div class="category">
-	<ul component="category" class="topic-list" itemscope itemtype="http://www.schema.org/ItemList" data-nextstart="{nextStart}">
-		<meta itemprop="itemListOrder" content="descending">
-		<!-- BEGIN topics -->
-		<li component="category/topic" class="row clearfix {function.generateTopicClass}" <!-- IMPORT partials/data/category.tpl -->>
-			<meta itemprop="name" content="{function.stripTags, title}">
-	
-			<div class="col-md-7 col-sm-9 col-xs-10 content">
-				<div class="avatar pull-left">
-					<!-- IF showSelect -->
-					<div class="select fa-square-o">
-						<!-- IF topics.user.picture -->
-						{function.renderTopicImage}
-						<!-- ELSE -->
-						<div class="user-icon" style="background-color: {topics.user.icon:bgColor};" title="{topics.user.username}">{topics.user.icon:text}</div>
-						<!-- ENDIF topics.user.picture -->
-						<i class="fa fa-check"></i>
-					</div>
-					<!-- ELSE -->
-					<a href="{config.relative_path}/user/{topics.user.userslug}" class="pull-left">
-						<!-- IF topics.user.picture -->
-						{function.renderTopicImage}
-						<!-- ELSE -->
-						<div class="user-icon" style="background-color: {topics.user.icon:bgColor};" title="{topics.user.username}">{topics.user.icon:text}</div>
-						<!-- ENDIF topics.user.picture -->
+
+<div class="row featured-threads" itemscope itemtype="http://www.schema.org/ItemList">
+	<!-- BEGIN topics -->
+	<div component="categories/category" class="<!-- IF topics.category.class -->{topics.category.class}<!-- ELSE -->col-md-3 col-sm-6 col-xs-12<!-- ENDIF topics.category.class --> category-item" data-cid="{topics.category.cid}" data-numRecentReplies="{topics.category.numRecentReplies}">
+		<meta itemprop="name" content="{topics.category.name}">
+
+		<div class="category-icon">
+			<a style="color: {topics.category.color};" href="{config.relative_path}/topic/{topics.slug}" itemprop="url">
+				<div
+					id="category-{topics.category.cid}" class="category-header category-header-image-{topics.category.imageClass}"
+					style="
+						<!-- IF topics.category.backgroundImage -->background-image: url({topics.category.backgroundImage});<!-- ENDIF topics.category.backgroundImage -->
+						<!-- IF topics.category.bgColor -->background-color: {topics.category.bgColor};<!-- ENDIF topics.category.bgColor -->
+						color: {topics.category.color};
+					"
+				>
+					<!-- IF topics.category.icon -->
+					<div><i class="fa {topics.category.icon} fa-4x hidden-xs"></i></div>
+					<!-- ENDIF topics.category.icon -->
+				</div>
+			</a>
+
+			<div class="category-box">
+				<div class="category-info" style="color: {topics.category.color};">
+					<a href="{config.relative_path}/topic/{topics.slug}" itemprop="url" style="color: {topics.category.color};">
+						<h4><!-- IF topics.category.icon --><i class="fa {topics.category.icon} visible-xs-inline"></i> <!-- ENDIF topics.category.icon -->{topics.title}</h4>
+						<div class="description" itemprop="description"><strong>{topics.category.name}</strong> <span class="timeago" title="{topics.relativeTime}"></span></div>
 					</a>
-					<!-- ENDIF showSelect -->
-				</div>
-	
-				<h2 component="topic/header" class="title">
-					<i component="topic/pinned" class="fa fa-thumb-tack <!-- IF !topics.pinned -->hide<!-- ENDIF !topics.pinned -->"></i>
-					<i component="topic/locked" class="fa fa-lock <!-- IF !topics.locked -->hide<!-- ENDIF !topics.locked -->"></i>
-					<!-- IF !topics.noAnchor -->
-					<a href="{config.relative_path}/topic/{topics.slug}" itemprop="url">{topics.title}</a><br />
-					<!-- ELSE -->
-					{topics.title}<br />
-					<!-- ENDIF !topics.noAnchor -->
-	
-					<!-- IF !template.category -->
-					<small>
-						<a href="{config.relative_path}/category/{topics.category.slug}"><span class="fa-stack fa-lg"><i style="color:{topics.category.bgColor};"class="fa fa-circle fa-stack-2x"></i><i style="color:{topics.category.color};" class="fa {topics.category.icon} fa-stack-1x"></i></span> {topics.category.name}</a> &bull;
-					</small>
-					<!-- ENDIF !template.category -->
-	
-					<span class="tag-list hidden-xs">
-						<!-- BEGIN tags -->
-						<a href="{config.relative_path}/tags/{topics.tags.value}"><span class="tag" style="<!-- IF topics.tags.color -->color: {topics.tags.color};<!-- ENDIF topics.tags.color --><!-- IF topics.tags.bgColor -->background-color: {topics.tags.bgColor};<!-- ENDIF topics.tags.bgColor -->">{topics.tags.value}</span></a>
-						<!-- END tags -->
-						<!-- IF topics.tags.length --><small>&bull;</small><!-- ENDIF topics.tags.length -->
-					</span>
-	
-					<small class="hidden-xs"><span class="timeago" title="{topics.relativeTime}"></span></small>
-					<small class="visible-xs-inline">
-						<!-- IF topics.teaser.timestamp -->
-						<span class="timeago" title="{topics.teaser.timestamp}"></span>
-						<!-- ELSE -->
-						<span class="timeago" title="{topics.relativeTime}"></span>
-						<!-- ENDIF topics.teaser.timestamp -->
-					</small>
-				</h2>
-			</div>
-	
-			<div class="mobile-stat col-xs-2 visible-xs text-right">
-				<span class="human-readable-number">{topics.postcount}</span> <a href="{config.relative_path}/topic/{topics.slug}/{topics.teaser.index}"><i class="fa fa-arrow-circle-right"></i></a>
-			</div>
-	
-			<div class="col-md-1 hidden-sm hidden-xs stats">
-				<span class="human-readable-number" title="{topics.postcount}">{topics.postcount}</span><br />
-				<small>posts</small>
-			</div>
-	
-			<div class="col-md-1 hidden-sm hidden-xs stats">
-				<span class="human-readable-number" title="{topics.viewcount}">{topics.viewcount}</span><br />
-				<small>views</small>
-			</div>
-	
-			<div class="col-md-3 col-sm-3 teaser hidden-xs">
-				<div class="card" style="border-color: {topics.category.bgColor}">
-					<!-- IF topics.unreplied -->
-					<p>
-						No one has replied
-					</p>
-					<!-- ELSE -->
-					<p>
-						<a href="{config.relative_path}/user/{topics.teaser.user.userslug}">
-							<!-- IF topics.teaser.user.picture -->
-							<img title="{topics.teaser.user.username}" class="user-img" src="{topics.teaser.user.picture}" />
-							<!-- ELSE -->
-							<span title="{topics.teaser.user.username}" class="user-icon user-img" style="background-color: {topics.teaser.user.icon:bgColor};">{topics.teaser.user.icon:text}</span>
-							<!-- ENDIF topics.teaser.user.picture -->
-						</a>
-						<a class="permalink" href="{config.relative_path}/topic/{topics.slug}/{topics.teaser.index}">
-							<span class="timeago" title="{topics.teaser.timestamp}"></span>
-						</a>
-					</p>
-					<div class="post-content">
-						{topics.teaser.content}
-					</div>
-					<!-- ENDIF topics.unreplied -->
 				</div>
 			</div>
-		</li>
-		<!-- END topics -->
-	</ul>
+
+			<span class="post-count" style="color: {topics.category.color};">{topics.postcount}</span>
+		</div>
+	</div>
+	<!-- END topics -->
 </div>
+<br />
+
+<script type="text/javascript">
+(function() {
+	$('span.timeago').timeago();
+
+	var featuredThreadsWidget = app.widgets.featuredThreads;
+
+	var numPosts = parseInt('{numPostsPerTopic}', 10); // TODO replace with setting from widget
+	numPosts = numPosts || 8;
+
+	if (!featuredThreadsWidget) {
+		featuredThreadsWidget = {};
+		featuredThreadsWidget.onNewPost = function(data) {
+			var tid;
+			if(data && data.posts && data.posts.length) {
+				tid = data.posts[0].tid;
+			}
+
+			var category = $('.home .category-item[data-tid="' + tid + '"]');
+			var recentPosts = category.find('.post-preview');
+			var insertBefore =  recentPosts.first();
+
+			if (!insertBefore.length) {
+				return;
+			}
+
+			parseAndTranslate(data.posts, function(html) {
+				html.hide()
+					.insertBefore(insertBefore)
+					.fadeIn();
+
+				app.createUserTooltips();
+				if (category.find('.post-preview').length > numPosts) {
+					recentPosts.last().remove();
+				}
+			});
+		}
+
+		app.widgets.featuredThreads = featuredThreadsWidget;
+		socket.on('event:new_post', app.widgets.featuredThreads.onNewPost);
+	}
+
+	function parseAndTranslate(posts, callback) {
+		templates.preload_template('widgets/featured-topics/posts', function() {
+			var html = templates['widgets/featured-topics/posts'].parse({
+				topics: {
+					posts: posts
+				}
+			});
+
+			translator.translate(html, function(translatedHTML) {
+				translatedHTML = $(translatedHTML);
+				translatedHTML.find('img').addClass('img-responsive');
+				translatedHTML.find('span.timeago').timeago();
+				callback(translatedHTML);
+			});
+		});
+	}
+}());
+
+</script>
