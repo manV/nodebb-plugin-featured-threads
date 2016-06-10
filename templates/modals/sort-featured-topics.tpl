@@ -3,7 +3,7 @@
 	<!-- BEGIN topics -->
 	<li>
 		<div class="panel panel-default pointer">
-			<div class="panel-heading featured-topic" data-tid="{topics.tid}">
+			<div class="panel-heading featured-topic" data-tid="{topics.tid}" style="background-color:white !important;">
 				<strong>{topics.title}</strong> <small><span class="timeago" title="{topics.relativeTime}"></span></small>
 				<span class="pull-right delete-featured"><i class="fa fa-times-circle"></i></span>
 			</div>
